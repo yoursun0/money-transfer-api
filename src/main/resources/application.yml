@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      databaseName: MoneyTransfer
+      database: MoneyTransfer
       host: 127.0.0.1
       port: 27017
 
