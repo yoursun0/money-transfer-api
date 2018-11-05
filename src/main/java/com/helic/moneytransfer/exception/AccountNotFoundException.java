@@ -2,14 +2,14 @@ package com.helic.moneytransfer.exception;
 
 public class AccountNotFoundException extends RuntimeException {
 
-    private String accountId;
+    private Long accountNo;
 
-    public AccountNotFoundException(String accountId) {
-        super(String.format("Account Not Found [accountId:%s]", accountId));
-        this.accountId = accountId;
+    public AccountNotFoundException(Long accountNo) {
+        super(String.format("Account Not Found [accountNo:%d]", accountNo));
+        this.accountNo = accountNo;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public Long getAccountNo() {
+        return accountNo;
     }
 }

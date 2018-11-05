@@ -10,24 +10,24 @@ basePath: /v1/money
 produces:
 - application/json
 paths:
-  /balance/{accountId}:
+  /balance/{accountNo}:
     get:
       summary: Display the account balance of specific customer account
       description: |
-        Query the account balance by account ID, retrieve the account balance in JSON format.
+        Query the account balance by account number, retrieve the account balance in JSON format.
       parameters:
-      - name: accountId
+      - name: accountNo
         in: path
-        description: account ID
+        description: account number
         required: true
-        type: string
+        type: number
       responses:
         200:
           description: A JSON object of account balance
           schema:
             $ref: '#/definitions/AccountBalance'
         404:
-          description: Account ID not found
+          description: Account Number not found
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -47,7 +47,7 @@ paths:
       - name: transaction
         in: "body"
         description: |
-          Transaction details including from account ID, to account ID, amount, etc.
+          Transaction details including from account No, to account No, amount, etc.
         required: true
         schema:
           $ref: "#/definitions/Transaction"
@@ -61,7 +61,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         404:
-          description: Account ID not found
+          description: Account Number not found
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -72,9 +72,9 @@ definitions:
   AccountBalance:
     type: object
     properties:
-      accountId:
-        type: string
-        description: Account ID
+      accountNo:
+        type: number
+        description: Account Number
       accountName:
         type: string
         description: Account holder name
@@ -90,12 +90,12 @@ definitions:
   Transaction:
     type: object
     properties:
-      fromAccountId:
+      fromAccountNo:
         type: string
-        description: from account ID
-      toAccountId:
+        description: from account number
+      toAccountNo:
         type: string
-        description: to account ID
+        description: to account number
       toAccountName:
         type: string
         description: to account holder name, for double confirmation

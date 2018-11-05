@@ -1,6 +1,5 @@
 package com.helic.moneytransfer.web.controller;
 
-import com.helic.moneytransfer.db.entity.Currency;
 import com.helic.moneytransfer.exception.AccountNotFoundException;
 import com.helic.moneytransfer.service.AccountBalanceService;
 import com.helic.moneytransfer.web.model.AccountBalance;
@@ -10,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 /**
  * RESTful APIs entry point
@@ -28,10 +25,10 @@ public class WebController {
     @Autowired
     private AccountBalanceService accountBalanceService;
 
-    @GetMapping(value = "/account/{accountId}")
-    public AccountBalance getAccount(@PathVariable String accountId) {
-        logger.info("Get Account API request received.[account ID:{}]", accountId);
-        AccountBalance balance = accountBalanceService.getAccountBalanceByAccountId(accountId);
+    @GetMapping(value = "/account/{accountNo}")
+    public AccountBalance getAccount(@PathVariable Long accountNo) {
+        logger.info("Get Account API request received.[account No:{}]", accountNo);
+        AccountBalance balance = accountBalanceService.getAccountBalanceByAccountNo(accountNo);
         logger.debug("Account balance = {}", balance);
         return balance;
     }
@@ -44,7 +41,7 @@ public class WebController {
     @ExceptionHandler({AccountNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse onAccountNotFound(AccountNotFoundException e) {
-        logger.warn("Account not found in database! [account ID:{}]", e.getAccountId());
+        logger.warn("Account not found in database! [account No:{}]", e.getAccountNo());
         ErrorResponse resp = new ErrorResponse();
         resp.setErrorMessage(e.getMessage());
         resp.setErrorCode(HttpStatus.NOT_FOUND.value());
