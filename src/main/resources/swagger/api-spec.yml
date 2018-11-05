@@ -1,0 +1,118 @@
+swagger: '2.0'
+info:
+  title: Money Transfer API
+  description: An API for Transaction creation and Retrieve balance
+  version: "1.0"
+host: localhost
+schemes:
+- http
+basePath: /v1/money
+produces:
+- application/json
+paths:
+  /account/{id}:
+    get:
+      summary: Display the account balance of specific customer account
+      description: |
+        Query the account balance by account ID, retrieve the account balance in JSON format.
+      parameters:
+      - name: id
+        in: path
+        description: account ID
+        required: true
+        type: string
+      responses:
+        200:
+          description: A JSON object of account balance
+          schema:
+            $ref: '#/definitions/Account'
+        404:
+          description: Account ID not found
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /transaction:
+    post:
+      summary: transfer money between 2 customer accounts
+      description: |
+        Create transaction for money transfer, from one account to another account
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: transaction
+        in: "body"
+        description: |
+          Transaction details including from account ID, to account ID, amount, etc.
+        required: true
+        schema:
+          $ref: "#/definitions/Transaction"
+      responses:
+        200:
+          description: If transaction success, display a JSON object of account balance of from account
+          schema:
+            $ref: '#/definitions/Account'
+        400:
+          description: Account balance not enough for the money transfer / Account holder name not matched
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Account ID not found
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Account:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Account ID
+      name:
+        type: string
+        description: Account holder name
+      balance:
+        type: number
+        description: Current account balance
+      currency:
+        type: string
+        description: Account currency, support only HKD for API version 1
+      timestamp:
+        type: date
+        description: the current timestamp of server response
+  Transaction:
+    type: object
+    properties:
+      fromAccountId:
+        type: string
+        description: from account ID
+      toAccountId:
+        type: string
+        description: to account ID
+      toAccountName:
+        type: string
+        description: to account holder name, for double confirmation
+      amount:
+        type: number
+        description: amount of money to transfer
+      currency:
+        type: string
+        description: currency of the money transaction, support only HKD for API version 1
+      date:
+        type: date
+        description: Optional field, scheduled date for the transaction to be executed. Execute immediately if leave blank.
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string

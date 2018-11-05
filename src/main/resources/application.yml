@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      databaseName: MoneyTransfer
+      host: 127.0.0.1
+      port: 27017
+
+logging:
+  path: logs
+  file: server

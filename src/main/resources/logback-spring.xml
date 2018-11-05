@@ -1,0 +1,13 @@
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <property name="CONSOLE_LOG_PATTERN"
+              value="[%d{ISO8601}][%level][%t][%logger{30}]%m%n"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <root level="WARN">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+    <logger name="com.helic" level="DEBUG"/>
+
+</configuration>
