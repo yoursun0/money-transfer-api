@@ -1,0 +1,18 @@
+[
+  {
+    "_id" : "5be018f1d51360c2bd784c34",
+    "name" : "Super Admin",
+    "balance" : 99999.00,
+    "currency" : "HKD",
+    "createTs" : {"$date":"2018-01-01T00:00:00Z"},
+    "updateTs" : {"$date":"2018-01-01T00:00:00Z"}
+  },
+  {
+    "_id" : "5be01af0f288432e6450c6b7",
+    "name" : "Peter Chan",
+    "balance" : 123.00,
+    "currency" : "HKD",
+    "createTs" : {"$date":"2018-01-01T00:00:00Z"},
+    "updateTs" : {"$date":"2018-01-01T00:00:00Z"}
+  }
+]
