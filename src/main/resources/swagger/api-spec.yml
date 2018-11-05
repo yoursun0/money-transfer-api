@@ -10,13 +10,13 @@ basePath: /v1/money
 produces:
 - application/json
 paths:
-  /account/{id}:
+  /balance/{accountId}:
     get:
       summary: Display the account balance of specific customer account
       description: |
         Query the account balance by account ID, retrieve the account balance in JSON format.
       parameters:
-      - name: id
+      - name: accountId
         in: path
         description: account ID
         required: true
@@ -25,7 +25,7 @@ paths:
         200:
           description: A JSON object of account balance
           schema:
-            $ref: '#/definitions/Account'
+            $ref: '#/definitions/AccountBalance'
         404:
           description: Account ID not found
           schema:
@@ -69,13 +69,13 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 definitions:
-  Account:
+  AccountBalance:
     type: object
     properties:
-      id:
+      accountId:
         type: string
         description: Account ID
-      name:
+      accountName:
         type: string
         description: Account holder name
       balance:
@@ -84,9 +84,9 @@ definitions:
       currency:
         type: string
         description: Account currency, support only HKD for API version 1
-      timestamp:
+      dateTime:
         type: date
-        description: the current timestamp of server response
+        description: the current timestamp of server response, in ISO-8601 date format
   Transaction:
     type: object
     properties:

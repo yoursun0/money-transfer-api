@@ -1,0 +1,40 @@
+package com.helic.moneytransfer.service;
+
+import com.helic.moneytransfer.db.entity.Account;
+import com.helic.moneytransfer.db.entity.Currency;
+import com.helic.moneytransfer.db.repo.AccountRepository;
+import com.helic.moneytransfer.exception.AccountNotFoundException;
+import com.helic.moneytransfer.web.model.AccountBalance;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
+@Service
+public class AccountBalanceService {
+
+    @Autowired
+    private AccountRepository accountRepository;
+
+    private Logger logger = LoggerFactory.getLogger(AccountBalanceService.class);
+
+    public AccountBalance getAccountBalanceByAccountId(String accountId) throws AccountNotFoundException {
+
+        Account account = accountRepository.findById(accountId).orElseThrow(
+                () -> new AccountNotFoundException(accountId)
+        );
+        return map(account);
+    }
+
+    private AccountBalance map(Account src){
+        AccountBalance dest = new AccountBalance();
+        dest.setAccountId(src.getId());
+        dest.setAccountName(src.getName());
+        dest.setBalance(src.getBalance());
+        dest.setCurrency(src.getCurrency());
+        dest.setDateTime(LocalDateTime.now());
+        return dest;
+    }
+}
