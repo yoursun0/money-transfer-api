@@ -92,10 +92,10 @@ definitions:
     type: object
     properties:
       fromAccountNo:
-        type: string
+        type: number
         description: from account number
       toAccountNo:
-        type: string
+        type: number
         description: to account number
       toAccountName:
         type: string
@@ -109,7 +109,7 @@ definitions:
       date:
         type: string
         format: date
-        description: Optional field, scheduled date for the transaction to be executed. Execute immediately if leave blank.
+        description: Optional field, in format yyyy-MM-dd, scheduled date for the transaction to be executed. Execute immediately if leave blank.
   Error:
     type: object
     properties:

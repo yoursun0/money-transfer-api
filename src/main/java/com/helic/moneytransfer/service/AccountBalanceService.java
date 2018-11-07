@@ -21,7 +21,7 @@ public class AccountBalanceService {
     private Logger logger = LoggerFactory.getLogger(AccountBalanceService.class);
 
     public AccountBalance getAccountBalanceByAccountNo(Long accountNo) throws AccountNotFoundException {
-
+        logger.debug("Getting account information of [accountNo:{}] from database", accountNo);
         Account account = accountRepository.findById(accountNo).orElseThrow(
                 () -> new AccountNotFoundException(accountNo)
         );
