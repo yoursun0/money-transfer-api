@@ -1,7 +1,8 @@
 CREATE SCHEMA `money` ;
 USE `money` ;
 
-CREATE USER 'srv_money'@'%' IDENTIFIED WITH mysql_native_password BY 'money123';
+CREATE USER 'srv_money'@'%' IDENTIFIED BY 'money123';
+-- ALTER USER 'srv_money'@'%' IDENTIFIED WITH mysql_native_password BY 'money123';
 GRANT ALL ON money.* TO 'srv_money'@'%';
 CREATE TABLE `account` (
   `id` BIGINT(20) UNSIGNED NOT NULL,
