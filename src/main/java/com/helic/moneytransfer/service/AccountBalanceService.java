@@ -5,12 +5,17 @@ import com.helic.moneytransfer.web.model.Currency;
 import com.helic.moneytransfer.db.repo.AccountRepository;
 import com.helic.moneytransfer.exception.AccountNotFoundException;
 import com.helic.moneytransfer.web.model.AccountBalance;
+import com.helic.moneytransfer.web.model.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AccountBalanceService {
@@ -26,6 +31,18 @@ public class AccountBalanceService {
                 () -> new AccountNotFoundException(accountNo)
         );
         return mapToAccountBalance(account);
+    }
+
+    public AccountBalance routeCheckBalance(Transaction transaction, String url){
+        // Display the account balance of the from account
+        String fromAccountNo = Long.toString(transaction.getFromAccountNo());
+        logger.info("Display the account balance of the from account [accountNo:{}]", fromAccountNo);
+
+        String uri = StringUtils.replace(url, "/transaction", "/account/{accountNo}");
+        Map<String, String> requestMap = new HashMap<>();
+        requestMap.put("accountNo", fromAccountNo);
+        logger.info("Call check balance API by uri:{}", uri);
+        return new RestTemplate().getForObject(uri, AccountBalance.class, requestMap);
     }
 
     private AccountBalance mapToAccountBalance(Account src){

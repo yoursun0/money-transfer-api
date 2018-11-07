@@ -10,6 +10,7 @@ public class Transaction {
     @NotNull
     private Long toAccountNo;
 
+    @NotNull
     private String toAccountName;
 
     @NotNull

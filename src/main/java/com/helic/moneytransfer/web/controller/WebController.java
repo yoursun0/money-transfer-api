@@ -61,6 +61,8 @@ public class WebController {
             HttpServletRequest request,
             @Valid @RequestBody Transaction transaction, BindingResult bindingResult) throws WrongRequestFormatException, AccountNotFoundException {
 
+        logger.info("Execute Transaction API request received.");
+
         // Validation of request body
         if (bindingResult.hasErrors()) {
             logger.error("Fail to bind the request object with the Transaction class:");
@@ -69,18 +71,10 @@ public class WebController {
         }
 
         // Execute transaction in database
-        logger.info("Execute Transaction API request received.");
         transactionService.executeTransaction(transaction);
 
-        // Display the account balance of the from account
-        String fromAccountNo = Long.toString(transaction.getFromAccountNo());
-        logger.info("Display the account balance of the from account [accountNo:{}]", fromAccountNo);
-
-        String url = StringUtils.replace(request.getRequestURL().toString(), "/transaction", "/account/{accountNo}");
-        Map<String, String> requestMap = new HashMap<>();
-        requestMap.put("accountNo", fromAccountNo);
-        logger.info("Call check balance API by url:{}", url);
-        return new RestTemplate().getForObject(url, AccountBalance.class, requestMap);
+        // Display the account balance of from account
+        return accountBalanceService.routeCheckBalance(transaction, request.getRequestURL().toString());
     }
 
     /**
