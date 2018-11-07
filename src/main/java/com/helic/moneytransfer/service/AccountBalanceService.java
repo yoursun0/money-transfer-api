@@ -1,7 +1,7 @@
 package com.helic.moneytransfer.service;
 
 import com.helic.moneytransfer.db.entity.Account;
-import com.helic.moneytransfer.db.entity.Currency;
+import com.helic.moneytransfer.web.model.Currency;
 import com.helic.moneytransfer.db.repo.AccountRepository;
 import com.helic.moneytransfer.exception.AccountNotFoundException;
 import com.helic.moneytransfer.web.model.AccountBalance;
@@ -25,10 +25,10 @@ public class AccountBalanceService {
         Account account = accountRepository.findById(accountNo).orElseThrow(
                 () -> new AccountNotFoundException(accountNo)
         );
-        return map(account);
+        return mapToAccountBalance(account);
     }
 
-    private AccountBalance map(Account src){
+    private AccountBalance mapToAccountBalance(Account src){
         AccountBalance dest = new AccountBalance();
         dest.setAccountNo(src.getId());
         dest.setAccountName(src.getName());

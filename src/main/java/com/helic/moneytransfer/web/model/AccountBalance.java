@@ -1,7 +1,5 @@
 package com.helic.moneytransfer.web.model;
 
-import com.helic.moneytransfer.db.entity.Currency;
-
 import java.time.LocalDateTime;
 
 public class AccountBalance {

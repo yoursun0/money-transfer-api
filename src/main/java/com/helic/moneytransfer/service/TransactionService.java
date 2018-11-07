@@ -23,26 +23,7 @@ public class TransactionService {
 
     private Logger logger = LoggerFactory.getLogger(TransactionService.class);
 
-    public AccountBalance executeTransactionAndRetrieveBalance(Transaction transaction){
-        return retrieveBalanceByRestCall(transaction.getFromAccountNo());
-    }
-
-    private AccountBalance retrieveBalanceByRestCall(Long accountNo){
-        RestTemplate template = new RestTemplate();
-
-        String uri = "http://localhost:8080/v1/money/account/{accountNo}";
-
-        Map<String, String> requestMap = new HashMap<>();
-        requestMap.put("accountNo", Long.toString(accountNo));
-        AccountBalance response;
-        try{
-            ResponseEntity<AccountBalance> responseEntity = template.getForEntity(uri, AccountBalance.class, requestMap);
-            response = responseEntity.getBody();
-        }
-        catch(Exception e){
-            logger.error(e.getMessage() ,e);
-            response = null;
-        }
-        return response;
+    public void executeTransaction(Transaction transaction){
+        logger.info("Execute money transaction: {}", transaction);
     }
 }

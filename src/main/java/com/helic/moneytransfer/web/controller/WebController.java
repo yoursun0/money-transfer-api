@@ -1,5 +1,6 @@
 package com.helic.moneytransfer.web.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.helic.moneytransfer.exception.AccountNotFoundException;
@@ -14,8 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * RESTful APIs entry point
@@ -36,24 +42,45 @@ public class WebController {
     private TransactionService transactionService;
 
     @GetMapping(value = "/account/{accountNo}")
-    public @ResponseBody AccountBalance getAccount(@PathVariable Long accountNo) {
+    public @ResponseBody
+    AccountBalance getAccount(@PathVariable String accountNo) {
         logger.info("Get Account API request received.[account No:{}]", accountNo);
-        AccountBalance balance = accountBalanceService.getAccountBalanceByAccountNo(accountNo);
-        logger.debug("Account balance = {}", balance);
-        return balance;
+        try {
+            Long accountNumber = Long.valueOf(accountNo);
+            AccountBalance balance = accountBalanceService.getAccountBalanceByAccountNo(accountNumber);
+            logger.debug("Account balance = {}", balance);
+            return balance;
+        } catch (NumberFormatException ex) {
+            throw new WrongRequestFormatException("Account No must be an integer.");
+        }
     }
 
     @PostMapping(value = "/transaction")
-    public @ResponseBody AccountBalance executeTransaction(@Valid @RequestBody Transaction transaction, BindingResult bindingResult) throws WrongRequestFormatException, AccountNotFoundException {
+    public @ResponseBody
+    AccountBalance executeTransaction(
+            HttpServletRequest request,
+            @Valid @RequestBody Transaction transaction, BindingResult bindingResult) throws WrongRequestFormatException, AccountNotFoundException {
 
+        // Validation of request body
         if (bindingResult.hasErrors()) {
             logger.error("Fail to bind the request object with the Transaction class:");
             String errMessage = bindingResult.getAllErrors().toString();
             throw new WrongRequestFormatException(errMessage);
         }
 
+        // Execute transaction in database
         logger.info("Execute Transaction API request received.");
-        return transactionService.executeTransactionAndRetrieveBalance(transaction);
+        transactionService.executeTransaction(transaction);
+
+        // Display the account balance of the from account
+        String fromAccountNo = Long.toString(transaction.getFromAccountNo());
+        logger.info("Display the account balance of the from account [accountNo:{}]", fromAccountNo);
+
+        String url = StringUtils.replace(request.getRequestURL().toString(), "/transaction", "/account/{accountNo}");
+        Map<String, String> requestMap = new HashMap<>();
+        requestMap.put("accountNo", fromAccountNo);
+        logger.info("Call check balance API by url:{}", url);
+        return new RestTemplate().getForObject(url, AccountBalance.class, requestMap);
     }
 
     /**

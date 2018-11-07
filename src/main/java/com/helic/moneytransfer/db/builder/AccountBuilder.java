@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.helic.moneytransfer.db.entity.Account;
-import com.helic.moneytransfer.db.entity.Currency;
+import com.helic.moneytransfer.web.model.Currency;
 
 public class AccountBuilder implements Serializable {
 

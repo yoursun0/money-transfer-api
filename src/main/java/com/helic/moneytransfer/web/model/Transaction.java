@@ -1,16 +1,21 @@
 package com.helic.moneytransfer.web.model;
 
+import javax.validation.constraints.NotNull;
+
 public class Transaction {
 
+    @NotNull
     private Long fromAccountNo;
 
+    @NotNull
     private Long toAccountNo;
 
     private String toAccountName;
 
+    @NotNull
     private double amount;
 
-    private String currency;
+    private Currency currency;
 
     private String date;
 
@@ -46,11 +51,11 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public String getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 
@@ -60,5 +65,17 @@ public class Transaction {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "fromAccountNo=" + fromAccountNo +
+                ", toAccountNo=" + toAccountNo +
+                ", toAccountName='" + toAccountName + '\'' +
+                ", amount=" + amount +
+                ", currency='" + currency + '\'' +
+                ", date='" + date + '\'' +
+                '}';
     }
 }

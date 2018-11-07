@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.helic.moneytransfer.db.builder.AccountBuilder;
 import com.helic.moneytransfer.db.entity.Account;
-import com.helic.moneytransfer.db.entity.Currency;
 import com.helic.moneytransfer.db.repo.AccountRepository;
 import com.helic.moneytransfer.exception.AccountNotFoundException;
 import com.helic.moneytransfer.web.model.AccountBalance;
