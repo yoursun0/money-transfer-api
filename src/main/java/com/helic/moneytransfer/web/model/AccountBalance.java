@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class AccountBalance {
 
-    private String accountId;
+    private Long accountNo;
 
     private String accountName;
 
@@ -16,12 +16,12 @@ public class AccountBalance {
 
     private LocalDateTime dateTime;
 
-    public String getAccountId() {
-        return accountId;
+    public Long getAccountNo() {
+        return accountNo;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setAccountNo(Long accountNo) {
+        this.accountNo = accountNo;
     }
 
     public String getAccountName() {
@@ -59,7 +59,7 @@ public class AccountBalance {
     @Override
     public String toString() {
         return "AccountBalance{" +
-                "accountId='" + accountId + '\'' +
+                "accountNo='" + accountNo + '\'' +
                 ", accountName='" + accountName + '\'' +
                 ", balance=" + balance +
                 ", currency=" + currency +

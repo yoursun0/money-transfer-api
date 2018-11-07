@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    database: HSQL
+    properties:
+      hibernate:
+        use_sql_comments: true
+        format_sql: true
+        type: trace
+
+logging:
+  level:
+    com.helic: DEBUG

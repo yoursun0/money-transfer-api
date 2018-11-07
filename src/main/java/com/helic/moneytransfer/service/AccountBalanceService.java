@@ -20,20 +20,20 @@ public class AccountBalanceService {
 
     private Logger logger = LoggerFactory.getLogger(AccountBalanceService.class);
 
-    public AccountBalance getAccountBalanceByAccountId(String accountId) throws AccountNotFoundException {
+    public AccountBalance getAccountBalanceByAccountNo(Long accountNo) throws AccountNotFoundException {
 
-        Account account = accountRepository.findById(accountId).orElseThrow(
-                () -> new AccountNotFoundException(accountId)
+        Account account = accountRepository.findById(accountNo).orElseThrow(
+                () -> new AccountNotFoundException(accountNo)
         );
         return map(account);
     }
 
     private AccountBalance map(Account src){
         AccountBalance dest = new AccountBalance();
-        dest.setAccountId(src.getId());
+        dest.setAccountNo(src.getId());
         dest.setAccountName(src.getName());
         dest.setBalance(src.getBalance());
-        dest.setCurrency(src.getCurrency());
+        dest.setCurrency(Currency.valueOf(src.getCurrency()));
         dest.setDateTime(LocalDateTime.now());
         return dest;
     }

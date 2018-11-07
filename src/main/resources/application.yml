@@ -1,10 +1,8 @@
 spring:
-  data:
-    mongodb:
-      database: MoneyTransfer
-      host: 127.0.0.1
-      port: 27017
-
+  datasource:
+    url: jdbc:mysql://localhost:3306/money?serverTimezone=CST&autoReconnect=true&useSSL=false
+    username: srv_money
+    password: money123
 logging:
   path: logs
   file: server

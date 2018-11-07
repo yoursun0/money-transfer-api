@@ -1,41 +1,47 @@
 package com.helic.moneytransfer.db.entity;
 
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.*;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-@Document(collection = "Account")
+@Entity
+@Table(name = "account")
+@EntityListeners(AuditingEntityListener.class)
 public class Account {
 
     @Id
-    private String id;
+    private Long id;
 
-    @Field
+    @Column(name = "name", updatable = false, nullable = false)
+    @Size(min = 1, max = 255)
+    @NotNull
     private String name;
 
-    @Field
+    @Column(name= "balance")
     private double balance;
 
-    @Field
-    private Currency currency;
+    @Column(name= "currency")
+    private String currency;
 
-    @Field
+    @Column(name= "createdTs")
     @CreatedDate
-    private LocalDateTime createTs;
+    private LocalDateTime createdTs;
 
-    @Field
+    @Column(name= "updatedTs")
     @LastModifiedDate
-    private LocalDateTime updateTs;
+    private LocalDateTime updatedTs;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -55,27 +61,27 @@ public class Account {
         this.balance = balance;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 
-    public LocalDateTime getCreateTs() {
-        return createTs;
+    public LocalDateTime getCreatedTs() {
+        return createdTs;
     }
 
-    public void setCreateTs(LocalDateTime createTs) {
-        this.createTs = createTs;
+    public void setCreatedTs(LocalDateTime createdTs) {
+        this.createdTs = createdTs;
     }
 
-    public LocalDateTime getUpdateTs() {
-        return updateTs;
+    public LocalDateTime getUpdatedTs() {
+        return updatedTs;
     }
 
-    public void setUpdateTs(LocalDateTime updateTs) {
-        this.updateTs = updateTs;
+    public void setUpdatedTs(LocalDateTime updatedTs) {
+        this.updatedTs = updatedTs;
     }
 }

@@ -3,31 +3,31 @@ info:
   title: Money Transfer API
   description: An API for Transaction creation and Retrieve balance
   version: "1.0"
-host: localhost
+host: localhost:8080
 schemes:
 - http
 basePath: /v1/money
 produces:
 - application/json
 paths:
-  /balance/{accountId}:
+  /balance/{accountNo}:
     get:
       summary: Display the account balance of specific customer account
       description: |
-        Query the account balance by account ID, retrieve the account balance in JSON format.
+        Query the account balance by account number, retrieve the account balance in JSON format.
       parameters:
-      - name: accountId
+      - name: accountNo
         in: path
-        description: account ID
+        description: account number
         required: true
-        type: string
+        type: number
       responses:
         200:
           description: A JSON object of account balance
           schema:
             $ref: '#/definitions/AccountBalance'
         404:
-          description: Account ID not found
+          description: Account Number not found
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -47,7 +47,7 @@ paths:
       - name: transaction
         in: "body"
         description: |
-          Transaction details including from account ID, to account ID, amount, etc.
+          Transaction details including from account No, to account No, amount, etc.
         required: true
         schema:
           $ref: "#/definitions/Transaction"
@@ -55,13 +55,13 @@ paths:
         200:
           description: If transaction success, display a JSON object of account balance of from account
           schema:
-            $ref: '#/definitions/Account'
+            $ref: '#/definitions/AccountBalance'
         400:
           description: Account balance not enough for the money transfer / Account holder name not matched
           schema:
             $ref: '#/definitions/Error'
         404:
-          description: Account ID not found
+          description: Account Number not found
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -72,9 +72,9 @@ definitions:
   AccountBalance:
     type: object
     properties:
-      accountId:
-        type: string
-        description: Account ID
+      accountNo:
+        type: number
+        description: Account Number
       accountName:
         type: string
         description: Account holder name
@@ -85,17 +85,18 @@ definitions:
         type: string
         description: Account currency, support only HKD for API version 1
       dateTime:
-        type: date
+        type: string
+        format: date-time
         description: the current timestamp of server response, in ISO-8601 date format
   Transaction:
     type: object
     properties:
-      fromAccountId:
+      fromAccountNo:
         type: string
-        description: from account ID
-      toAccountId:
+        description: from account number
+      toAccountNo:
         type: string
-        description: to account ID
+        description: to account number
       toAccountName:
         type: string
         description: to account holder name, for double confirmation
@@ -106,7 +107,8 @@ definitions:
         type: string
         description: currency of the money transaction, support only HKD for API version 1
       date:
-        type: date
+        type: string
+        format: date
         description: Optional field, scheduled date for the transaction to be executed. Execute immediately if leave blank.
   Error:
     type: object
