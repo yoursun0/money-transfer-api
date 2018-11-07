@@ -55,7 +55,7 @@ paths:
         200:
           description: If transaction success, display a JSON object of account balance of from account
           schema:
-            $ref: '#/definitions/Account'
+            $ref: '#/definitions/AccountBalance'
         400:
           description: Account balance not enough for the money transfer / Account holder name not matched
           schema:
@@ -85,7 +85,8 @@ definitions:
         type: string
         description: Account currency, support only HKD for API version 1
       dateTime:
-        type: date
+        type: string
+        format: date-time
         description: the current timestamp of server response, in ISO-8601 date format
   Transaction:
     type: object
@@ -106,7 +107,8 @@ definitions:
         type: string
         description: currency of the money transaction, support only HKD for API version 1
       date:
-        type: date
+        type: string
+        format: date
         description: Optional field, scheduled date for the transaction to be executed. Execute immediately if leave blank.
   Error:
     type: object
