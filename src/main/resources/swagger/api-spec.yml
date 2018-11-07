@@ -3,7 +3,7 @@ info:
   title: Money Transfer API
   description: An API for Transaction creation and Retrieve balance
   version: "1.0"
-host: localhost
+host: localhost:8080
 schemes:
 - http
 basePath: /v1/money

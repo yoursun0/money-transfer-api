@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("/money")
+@RequestMapping("/v1/money")
 public class WebController {
 
     private Logger logger = LoggerFactory.getLogger(WebController.class);
