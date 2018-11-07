@@ -1,11 +1,9 @@
 spring:
-  jpa:
-    database: HSQL
-    properties:
-      hibernate:
-        use_sql_comments: true
-        format_sql: true
-        type: trace
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
 
 logging:
   level:

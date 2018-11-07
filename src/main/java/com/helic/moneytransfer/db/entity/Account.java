@@ -24,7 +24,7 @@ public class Account {
     private String name;
 
     @Column(name= "balance")
-    private double balance;
+    private Double balance;
 
     @Column(name= "currency")
     private String currency;
@@ -53,11 +53,11 @@ public class Account {
         this.name = name;
     }
 
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 
