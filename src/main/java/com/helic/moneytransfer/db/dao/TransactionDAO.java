@@ -26,7 +26,7 @@ public class TransactionDAO {
             jdbcTemplate.update("UPDATE account SET balance = balance - ? WHERE id = ?", transferAmount, fromAccountNo);
             jdbcTemplate.update("UPDATE account SET balance = balance + ? WHERE id = ?", transferAmount, toAccountNo);
         } else {
-            throw new NotEnoughMoneyException(fromAccountNo);
+            throw new NotEnoughMoneyException(fromAccountNo, transferAmount);
         }
     }
 }

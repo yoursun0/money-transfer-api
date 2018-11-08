@@ -2,8 +2,6 @@ package com.helic.moneytransfer.web.model;
 
 import javax.validation.constraints.NotNull;
 
-import net.bytebuddy.implementation.bind.annotation.Default;
-
 public class Transaction {
 
     @NotNull
@@ -18,6 +16,7 @@ public class Transaction {
     @NotNull
     private double amount;
 
+    // default currency for money transaction is HKD
     private String currency = "HKD";
 
     private String date;

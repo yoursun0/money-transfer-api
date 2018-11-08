@@ -1,5 +1,7 @@
 package com.helic.moneytransfer.web.model;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.Size;
@@ -11,6 +13,8 @@ public class ErrorResponse {
 
     @Size(max = 2048)
     private String errorMessage;
+
+    private LocalDateTime dateTime = LocalDateTime.now();
 
     public int getErrorCode() {
         return errorCode;
@@ -26,5 +30,9 @@ public class ErrorResponse {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 }

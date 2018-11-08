@@ -10,6 +10,7 @@ import com.helic.moneytransfer.db.entity.Account;
 import com.helic.moneytransfer.db.repo.AccountRepository;
 import com.helic.moneytransfer.exception.AccountNotFoundException;
 import com.helic.moneytransfer.exception.IncorrectAccountInfoException;
+import com.helic.moneytransfer.exception.NegativeTransferAmountException;
 import com.helic.moneytransfer.exception.NotEnoughMoneyException;
 import com.helic.moneytransfer.exception.NotSupportedCurrencyException;
 import com.helic.moneytransfer.web.model.Transaction;
@@ -49,8 +50,13 @@ public class TransactionService {
         );
 
         // Only HKD is supported for the current version
-        if (!HKD.equals(transaction.getCurrency())){
+        if (!HKD.equals(transaction.getCurrency().toUpperCase())){
             throw new NotSupportedCurrencyException(transaction.getCurrency());
+        }
+
+        // Transfer amount cannot be negative
+        if (transaction.getAmount() < 0){
+            throw new NegativeTransferAmountException(transaction.getAmount());
         }
 
         if (!transaction.getToAccountName().equals(toAccount.getName())) {
@@ -62,7 +68,7 @@ public class TransactionService {
         }
 
         if (fromAccount.getBalance() < transaction.getAmount()) {
-            throw new NotEnoughMoneyException(fromAccountNo);
+            throw new NotEnoughMoneyException(fromAccountNo, transaction.getAmount());
         }
     }
 }

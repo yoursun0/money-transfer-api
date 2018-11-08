@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import com.helic.moneytransfer.exception.AccountNotFoundException;
 import com.helic.moneytransfer.exception.IncorrectAccountInfoException;
+import com.helic.moneytransfer.exception.NegativeTransferAmountException;
 import com.helic.moneytransfer.exception.NotEnoughMoneyException;
 import com.helic.moneytransfer.exception.NotSupportedCurrencyException;
 import com.helic.moneytransfer.exception.WrongRequestFormatException;
@@ -115,7 +116,7 @@ public class WebController {
      *
      * @return HTTP response of status 400 Bad Request
      */
-    @ExceptionHandler({IncorrectAccountInfoException.class, NotEnoughMoneyException.class, NotSupportedCurrencyException.class})
+    @ExceptionHandler({IncorrectAccountInfoException.class, NotEnoughMoneyException.class, NegativeTransferAmountException.class, NotSupportedCurrencyException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse onBadRequest(RuntimeException e) {
         logger.error(e.getMessage());
