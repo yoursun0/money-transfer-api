@@ -48,8 +48,12 @@ Refer to pom.xml for details of maven dependencies.
  6. You can test the following APIs locally by using curl or POSTMAN (https://www.getpostman.com/)
  
  * GET  http://localhost:8080/v1/money/account/521877048123
+
+ `curl -X GET "http://localhost:8080/v1/money/account/521877048123" -H "accept: application/json"`
  
  * POST http://localhost:8080/v1/money/transaction
+
+ `curl -X POST "http://localhost:8080/v1/money/transaction" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"fromAccountNo\": 477333222431, \"toAccountNo\": 987654321000, \"toAccountName\": \"CHEUNG SIU MING\", \"amount\": 200, \"currency\": \"HKD\"}"`
 
 Please refer to API specification below for the request parameter details
 

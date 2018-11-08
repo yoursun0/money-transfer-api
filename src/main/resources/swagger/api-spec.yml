@@ -18,7 +18,7 @@ paths:
       parameters:
       - name: accountNo
         in: path
-        description: account number
+        description: account number, e.g. 477333222431
         required: true
         type: number
       responses:
@@ -79,37 +79,47 @@ definitions:
       accountNo:
         type: number
         description: Account Number
+        example: 477333222431
       accountName:
         type: string
         description: Account holder name
+        example: "WONG SHEUNG"
       balance:
         type: number
         description: Current account balance
+        example: 99999.00
       currency:
         type: string
         description: Account currency, support only HKD for API version 1
+        example: HKD
       dateTime:
         type: string
         format: date-time
         description: the current timestamp of server response, in ISO-8601 date format
+        example: "2018-11-08T00:00:45.606"
   Transaction:
     type: object
     properties:
       fromAccountNo:
         type: number
         description: from account number
+        example: 477333222431
       toAccountNo:
         type: number
         description: to account number
+        example: 987654321000
       toAccountName:
         type: string
         description: to account holder name, for double confirmation
+        example: "CHEUNG SIU MING"
       amount:
         type: number
         description: amount of money to transfer
+        example: 200.00
       currency:
         type: string
         description: currency of the money transaction, support only HKD for API version 1
+        example: HKD
   Error:
     type: object
     properties:
@@ -117,10 +127,13 @@ definitions:
         type: integer
         format: int32
         description: HTTP status code of the error
+        example: 404
       message:
         type: string
         description: the error description
+        example: "Account Not Found [accountNo:123123]"
       dateTime:
         type: string
         format: date-time
         description: the current timestamp of server response, in ISO-8601 date format
+        example: "2018-11-08T00:00:45.606"
