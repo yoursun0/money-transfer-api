@@ -16,7 +16,7 @@ public class Transaction {
     @NotNull
     private double amount;
 
-    private Currency currency;
+    private Currency currency = Currency.HKD;
 
     private String date;
 

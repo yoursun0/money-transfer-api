@@ -7,7 +7,7 @@ GRANT ALL ON money.* TO 'srv_money'@'%';
 CREATE TABLE `account` (
   `id` BIGINT(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
-  `balance` float(53) NOT NULL DEFAULT 0.00,
+  `balance` decimal(13,4) NOT NULL DEFAULT 0.00,
   `currency` varchar(3) NOT NULL DEFAULT 'HKD',
   `created_ts` DATETIME,
   `updated_ts` DATETIME,

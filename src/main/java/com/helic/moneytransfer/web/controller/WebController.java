@@ -4,6 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.helic.moneytransfer.exception.AccountNotFoundException;
+import com.helic.moneytransfer.exception.IncorrectAccountInfoException;
+import com.helic.moneytransfer.exception.NotEnoughMoneyException;
+import com.helic.moneytransfer.exception.NotSupportedCurrencyException;
 import com.helic.moneytransfer.exception.WrongRequestFormatException;
 import com.helic.moneytransfer.service.AccountBalanceService;
 import com.helic.moneytransfer.service.TransactionService;
@@ -85,7 +88,7 @@ public class WebController {
     @ExceptionHandler({AccountNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse onAccountNotFound(AccountNotFoundException e) {
-        logger.warn("Account not found in database! [account No:{}]", e.getAccountNo());
+        logger.error("Account not found in database! [account No:{}]", e.getAccountNo());
         ErrorResponse resp = new ErrorResponse();
         resp.setErrorMessage(e.getMessage());
         resp.setErrorCode(HttpStatus.NOT_FOUND.value());
@@ -106,4 +109,20 @@ public class WebController {
         resp.setErrorCode(HttpStatus.NOT_ACCEPTABLE.value());
         return resp;
     }
+
+    /**
+     * Exception handler for bad request
+     *
+     * @return HTTP response of status 400 Bad Request
+     */
+    @ExceptionHandler({IncorrectAccountInfoException.class, NotEnoughMoneyException.class, NotSupportedCurrencyException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse onBadRequest(RuntimeException e) {
+        logger.error(e.getMessage());
+        ErrorResponse resp = new ErrorResponse();
+        resp.setErrorMessage(e.getMessage());
+        resp.setErrorCode(HttpStatus.BAD_REQUEST.value());
+        return resp;
+    }
+
 }
