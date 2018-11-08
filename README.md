@@ -54,6 +54,16 @@ Refer to pom.xml for details of maven dependencies.
 ## API specification ##
 Refer to https://app.swaggerhub.com/apis/helicleung/money-transfer-api/1.0
 
+## Sample data ##
+Sample data is provided at MySQL script `/src/main/resources/db/ddl.sql`
+The initial account records are shown as below:
+
+| id            | name            | balance         | currency  | created_ts          | updated_ts          |
+| ------------- | --------------- | --------------- | --------- | ------------------- | ------------------- |
+| 477333222431  | WONG SHEUNG     | 99999.0000      | HKD       | 2018-01-02 11:11:11 |	2018-01-02 11:11:11 |
+| 521877048123  | CHAN TAI MAN    | 1000.0000       | HKD       | 2018-01-01 11:11:11 |	2018-01-01 11:11:11 |
+| 987654321000  | CHEUNG SIU MING | 7777.0000       | HKD       | 2018-07-01 11:11:11 |	2018-07-01 11:11:11 |
+
 ## Unit Testing ##
 This project uses jUnit 4 for unit testing
 
