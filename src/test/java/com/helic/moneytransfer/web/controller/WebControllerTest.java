@@ -27,6 +27,7 @@ import com.helic.moneytransfer.db.builder.AccountBuilder;
 import com.helic.moneytransfer.db.dao.TransactionDAO;
 import com.helic.moneytransfer.db.entity.Account;
 import com.helic.moneytransfer.db.repo.AccountRepository;
+import com.helic.moneytransfer.db.repo.TransactionRepository;
 import com.helic.moneytransfer.web.model.Transaction;
 
 import static org.junit.Assert.assertEquals;
@@ -83,6 +84,9 @@ public class WebControllerTest {
     private TransactionDAO transactionDAO;
 
     @Autowired
+    private TransactionRepository transactionRepository;
+
+    @Autowired
     private AccountRepository accountRepository;
 
     @SpyBean
@@ -96,6 +100,7 @@ public class WebControllerTest {
 
     @Before
     public void setupData() {
+        transactionRepository.deleteAll();
         accountRepository.deleteAll();
         List<Account> initData = new ArrayList<>();
         initData.add(account1);
@@ -106,6 +111,7 @@ public class WebControllerTest {
 
     @After
     public void tearDown() {
+        transactionRepository.deleteAll();
         accountRepository.deleteAll();
     }
 
@@ -169,6 +175,12 @@ public class WebControllerTest {
 
             assertEquals(account1.getBalance() - 200, fromAccount.getBalance(), EPISILON);
             assertEquals(account2.getBalance() + 200, toAccount.getBalance(), EPISILON);
+            assertEquals(1, transactionRepository.count());
+
+            com.helic.moneytransfer.db.entity.Transaction transactionData = transactionRepository.findAll().iterator().next();
+            assertEquals(account1.getId(), transactionData.getFromAccountNo());
+            assertEquals(account2.getId(), transactionData.getToAccountNo());
+            assertEquals(200.00, transactionData.getAmount(), EPISILON);
             return;
         }
         fail("NestedServletException is expected because the post transaction API should call get account balance API");

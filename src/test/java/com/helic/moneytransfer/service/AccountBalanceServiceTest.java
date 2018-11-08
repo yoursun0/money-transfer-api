@@ -117,7 +117,7 @@ public class AccountBalanceServiceTest {
         transaction.setToAccountName(account2.getName());
         transaction.setAmount(0.00);
         transaction.setCurrency("HKD");
-        AccountBalance balance = service.routeCheckBalance(transaction, mockContextUrl + "transaction");
+        AccountBalance balance = service.routeCheckBalance(transaction.getFromAccountNo(), mockContextUrl + "transaction");
         assertEquals(account1.getId(), balance.getAccountNo());
         assertEquals(account1.getName(), balance.getAccountName());
         assertEquals(account1.getBalance(), balance.getBalance(), EPISILON);

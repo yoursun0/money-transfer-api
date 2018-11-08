@@ -28,14 +28,18 @@ public class TransactionService {
 
     private Logger logger = LoggerFactory.getLogger(TransactionService.class);
 
+    /**
+     * Execute the money transfer based on input
+     * @param transaction request object containing all necessary transaction information
+     */
     public void executeTransaction(Transaction transaction) {
         logger.info("Execute money transaction: {}", transaction);
         validateTransaction(transaction);
-        transferMoney(transaction);
+        transferHKD(transaction);
     }
 
-    private void transferMoney(Transaction transaction) {
-        logger.info("Transfer money ${} from account No:{} to account No:{}", transaction.getAmount(), transaction.getFromAccountNo(), transaction.getToAccountNo());
+    private void transferHKD(Transaction transaction) {
+        logger.info("Transfer money HKD${} from account No:{} to account No:{}", transaction.getAmount(), transaction.getFromAccountNo(), transaction.getToAccountNo());
         transactionDAO.transferMoney(transaction.getFromAccountNo(), transaction.getToAccountNo(), transaction.getAmount());
     }
 
@@ -44,7 +48,7 @@ public class TransactionService {
         Long toAccountNo = transaction.getToAccountNo();
 
         // Only HKD is supported for the current version
-        if (!HKD.equals(transaction.getCurrency().toUpperCase())){
+        if (!HKD.equalsIgnoreCase(transaction.getCurrency())){
             throw new NotSupportedCurrencyException(transaction.getCurrency());
         }
 
@@ -64,7 +68,7 @@ public class TransactionService {
                 () -> new AccountNotFoundException(toAccountNo)
         );
 
-        if (!transaction.getToAccountName().equals(toAccount.getName())) {
+        if (!transaction.getToAccountName().equalsIgnoreCase(toAccount.getName())) {
             throw new IncorrectAccountInfoException("Account holder name of the input is incorrect.");
         }
 

@@ -3,24 +3,32 @@ package com.helic.moneytransfer.web.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.helic.moneytransfer.exception.AccountNotFoundException;
 import com.helic.moneytransfer.exception.IncorrectAccountInfoException;
-import com.helic.moneytransfer.exception.TransferAmountNotPositiveException;
 import com.helic.moneytransfer.exception.NotEnoughMoneyException;
 import com.helic.moneytransfer.exception.NotSupportedCurrencyException;
+import com.helic.moneytransfer.exception.TransferAmountNotPositiveException;
 import com.helic.moneytransfer.exception.WrongRequestFormatException;
 import com.helic.moneytransfer.service.AccountBalanceService;
 import com.helic.moneytransfer.service.TransactionService;
 import com.helic.moneytransfer.web.model.AccountBalance;
 import com.helic.moneytransfer.web.model.ErrorResponse;
 import com.helic.moneytransfer.web.model.Transaction;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 
 /**
  * RESTful APIs entry point
@@ -40,6 +48,13 @@ public class WebController {
     @Autowired
     private TransactionService transactionService;
 
+    /**
+     * GET Account Information API
+     * Fetch the account information by account number
+     *
+     * @param accountNo account number to look up
+     * @return an AccountBalance object containing key information of the account, including account holder name, currency, balance, etc.
+     */
     @GetMapping(value = "/account/{accountNo}")
     public @ResponseBody
     AccountBalance getAccount(@PathVariable String accountNo) {
@@ -54,11 +69,22 @@ public class WebController {
         }
     }
 
+    /**
+     * POST transaction API
+     * Request for a money transfer. After transaction complete, return the account information of the from account, by calling the GET Account Information API above
+     *
+     * @param transaction   a JSON object containing key information for the money transfer, including from account no, to account no, currency, amount, etc.
+     * @param bindingResult HTTP binding result
+     * @param request       HTTP Servlet Request object
+     * @return Returns an AccountBalance object containing key information of the from account after the money transfer.
+     */
     @PostMapping(value = "/transaction")
     public @ResponseBody
     AccountBalance executeTransaction(
-            HttpServletRequest request,
-            @Valid @RequestBody Transaction transaction, BindingResult bindingResult) throws WrongRequestFormatException, AccountNotFoundException {
+            @Valid @RequestBody Transaction transaction,
+            BindingResult bindingResult,
+            HttpServletRequest request
+    ) throws WrongRequestFormatException, AccountNotFoundException {
 
         logger.info("Execute Transaction API request received.");
 
@@ -73,7 +99,7 @@ public class WebController {
         transactionService.executeTransaction(transaction);
 
         // Display the account balance of from account
-        return accountBalanceService.routeCheckBalance(transaction, request.getRequestURL().toString());
+        return accountBalanceService.routeCheckBalance(transaction.getFromAccountNo(), request.getRequestURL().toString());
     }
 
     /**

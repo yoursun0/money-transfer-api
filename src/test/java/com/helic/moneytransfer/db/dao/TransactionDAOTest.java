@@ -18,9 +18,11 @@ import com.helic.moneytransfer.MoneyTransferApplication;
 import com.helic.moneytransfer.db.builder.AccountBuilder;
 import com.helic.moneytransfer.db.entity.Account;
 import com.helic.moneytransfer.db.repo.AccountRepository;
+import com.helic.moneytransfer.db.repo.TransactionRepository;
 import com.helic.moneytransfer.exception.NotEnoughMoneyException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MoneyTransferApplication.class)
@@ -58,8 +60,12 @@ public class TransactionDAOTest {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private TransactionRepository transactionRepository;
+
     @Before
     public void setupData() {
+        transactionRepository.deleteAll();
         accountRepository.deleteAll();
         List<Account> initData = new ArrayList<>();
         initData.add(account1);
@@ -70,6 +76,7 @@ public class TransactionDAOTest {
 
     @After
     public void tearDown() {
+        transactionRepository.deleteAll();
         accountRepository.deleteAll();
     }
 
@@ -80,9 +87,7 @@ public class TransactionDAOTest {
         long id3 = account3.getId();
 
         assertEquals(account1.getName(), accountRepository.findById(id1).get().getName());
-
         assertEquals(account2.getCurrency(), accountRepository.findById(id2).get().getCurrency());
-
         assertEquals(account3.getBalance(), accountRepository.findById(id3).get().getBalance(), EPISILON);
     }
 
@@ -94,10 +99,14 @@ public class TransactionDAOTest {
         transactionDAO.transferMoney(id1, id2, 200.00);
 
         assertEquals(account1.getBalance() - 200, accountRepository.findById(id1).get().getBalance(), EPISILON);
-
         assertEquals(account2.getBalance() + 200, accountRepository.findById(id2).get().getBalance(), EPISILON);
-    }
+        assertEquals(1, transactionRepository.count());
 
+        com.helic.moneytransfer.db.entity.Transaction transactionData = transactionRepository.findAll().iterator().next();
+        assertEquals(id1, transactionData.getFromAccountNo().longValue());
+        assertEquals(id2, transactionData.getToAccountNo().longValue());
+        assertEquals(200.00, transactionData.getAmount(), EPISILON);
+    }
 
     @Test
     public void transferTooMuchMoney() {
@@ -106,14 +115,14 @@ public class TransactionDAOTest {
 
         try {
             transactionDAO.transferMoney(id1, id2, 20000000.00);
-        } catch (NotEnoughMoneyException ex){
+        } catch (NotEnoughMoneyException ex) {
             assertEquals("Not enough money to transfer [20000000.00] from account. [accountNo:521877048123]", ex.getMessage());
 
             // Double confirm the transaction is not committed
 
             assertEquals(account1.getBalance(), accountRepository.findById(id1).get().getBalance(), EPISILON);
-
             assertEquals(account2.getBalance(), accountRepository.findById(id2).get().getBalance(), EPISILON);
+            assertEquals(0, transactionRepository.count());
             return;
         }
 

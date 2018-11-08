@@ -15,7 +15,6 @@ import com.helic.moneytransfer.db.entity.Account;
 import com.helic.moneytransfer.db.repo.AccountRepository;
 import com.helic.moneytransfer.exception.AccountNotFoundException;
 import com.helic.moneytransfer.web.model.AccountBalance;
-import com.helic.moneytransfer.web.model.Transaction;
 
 @Service
 public class AccountBalanceService {
@@ -27,6 +26,12 @@ public class AccountBalanceService {
 
     private Logger logger = LoggerFactory.getLogger(AccountBalanceService.class);
 
+    /**
+     * Get account information in AccountBalance object format, by providing account number
+     *
+     * @param accountNo the account number
+     * @return an AccountBalance object containing key information of the account, including account holder name, currency, balance, etc.
+     */
     public AccountBalance getAccountBalanceByAccountNo(Long accountNo) throws AccountNotFoundException {
         logger.debug("Getting account information of [accountNo:{}] from database", accountNo);
         Account account = accountRepository.findById(accountNo).orElseThrow(
@@ -35,9 +40,15 @@ public class AccountBalanceService {
         return mapToAccountBalance(account);
     }
 
-    public AccountBalance routeCheckBalance(Transaction transaction, String url) {
+    /**
+     * Call the GET Account Info API by another REST call, to retrieve latest account balance
+     *
+     * @param accountNo the account number
+     * @return an AccountBalance object containing key information of the account, including account holder name, currency, balance, etc.
+     */
+    public AccountBalance routeCheckBalance(Long accountNo, String url) {
         // Display the account balance of the from account
-        String fromAccountNo = Long.toString(transaction.getFromAccountNo());
+        String fromAccountNo = Long.toString(accountNo);
         logger.info("Display the account balance of the from account [accountNo:{}]", fromAccountNo);
 
         String uri = StringUtils.replace(url, "/transaction", "/account/{accountNo}");
