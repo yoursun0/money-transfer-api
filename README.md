@@ -41,11 +41,11 @@ Refer to pom.xml for details of maven dependencies.
 
  3. Checkout the project repository
  
- 4. Run maven clean install to deploy all the dependencies of the project.
- 
- 5. Compile and run MoneyTransferApplication.class as a springboot application
- 
- 6. You can test the following APIs locally by using POSTMAN (https://www.getpostman.com/)
+ 4. Run `mvn package` to package the project using maven
+
+ 5. Launch spring boot web application by this command: `java -jar target/money-transfer-0.0.1-SNAPSHOT.jar`
+
+ 6. You can test the following APIs locally by using curl or POSTMAN (https://www.getpostman.com/)
  
  * GET  http://localhost:8080/v1/money/account/521877048123
  
