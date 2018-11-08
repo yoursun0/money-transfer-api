@@ -19,8 +19,6 @@ public class Transaction {
     // default currency for money transaction is HKD
     private String currency = "HKD";
 
-    private String date;
-
     public Long getFromAccountNo() {
         return fromAccountNo;
     }
@@ -61,14 +59,6 @@ public class Transaction {
         this.currency = currency;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     @Override
     public String toString() {
         return "Transaction{" +
@@ -77,7 +67,6 @@ public class Transaction {
                 ", toAccountName='" + toAccountName + '\'' +
                 ", amount=" + amount +
                 ", currency='" + currency + '\'' +
-                ", date='" + date + '\'' +
                 '}';
     }
 }

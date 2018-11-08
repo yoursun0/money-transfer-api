@@ -106,10 +106,6 @@ definitions:
       currency:
         type: string
         description: currency of the money transaction, support only HKD for API version 1
-      date:
-        type: string
-        format: date
-        description: Optional field, in format yyyy-MM-dd, scheduled date for the transaction to be executed. Execute immediately if leave blank.
   Error:
     type: object
     properties:
