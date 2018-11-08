@@ -23,6 +23,8 @@ public class AccountBalanceService {
     @Autowired
     private AccountRepository accountRepository;
 
+    RestTemplate restTemplate = new RestTemplate();
+
     private Logger logger = LoggerFactory.getLogger(AccountBalanceService.class);
 
     public AccountBalance getAccountBalanceByAccountNo(Long accountNo) throws AccountNotFoundException {
@@ -42,10 +44,10 @@ public class AccountBalanceService {
         Map<String, String> requestMap = new HashMap<>();
         requestMap.put("accountNo", fromAccountNo);
         logger.info("Call check balance API by uri:{}", uri);
-        return new RestTemplate().getForObject(uri, AccountBalance.class, requestMap);
+        return restTemplate.getForObject(uri, AccountBalance.class, requestMap);
     }
 
-    private AccountBalance mapToAccountBalance(Account src) {
+    AccountBalance mapToAccountBalance(Account src) {
         AccountBalance dest = new AccountBalance();
         dest.setAccountNo(src.getId());
         dest.setAccountName(src.getName());

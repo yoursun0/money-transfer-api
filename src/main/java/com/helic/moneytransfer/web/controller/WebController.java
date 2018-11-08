@@ -5,7 +5,7 @@ import javax.validation.Valid;
 
 import com.helic.moneytransfer.exception.AccountNotFoundException;
 import com.helic.moneytransfer.exception.IncorrectAccountInfoException;
-import com.helic.moneytransfer.exception.NegativeTransferAmountException;
+import com.helic.moneytransfer.exception.TransferAmountNotPositiveException;
 import com.helic.moneytransfer.exception.NotEnoughMoneyException;
 import com.helic.moneytransfer.exception.NotSupportedCurrencyException;
 import com.helic.moneytransfer.exception.WrongRequestFormatException;
@@ -19,13 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * RESTful APIs entry point
@@ -116,7 +111,11 @@ public class WebController {
      *
      * @return HTTP response of status 400 Bad Request
      */
-    @ExceptionHandler({IncorrectAccountInfoException.class, NotEnoughMoneyException.class, NegativeTransferAmountException.class, NotSupportedCurrencyException.class})
+    @ExceptionHandler({
+            IncorrectAccountInfoException.class,
+            NotEnoughMoneyException.class,
+            TransferAmountNotPositiveException.class,
+            NotSupportedCurrencyException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse onBadRequest(RuntimeException e) {
         logger.error(e.getMessage());

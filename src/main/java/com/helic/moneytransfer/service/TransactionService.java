@@ -10,7 +10,7 @@ import com.helic.moneytransfer.db.entity.Account;
 import com.helic.moneytransfer.db.repo.AccountRepository;
 import com.helic.moneytransfer.exception.AccountNotFoundException;
 import com.helic.moneytransfer.exception.IncorrectAccountInfoException;
-import com.helic.moneytransfer.exception.NegativeTransferAmountException;
+import com.helic.moneytransfer.exception.TransferAmountNotPositiveException;
 import com.helic.moneytransfer.exception.NotEnoughMoneyException;
 import com.helic.moneytransfer.exception.NotSupportedCurrencyException;
 import com.helic.moneytransfer.web.model.Transaction;
@@ -42,12 +42,6 @@ public class TransactionService {
     private void validateTransaction(Transaction transaction) {
         Long fromAccountNo = transaction.getFromAccountNo();
         Long toAccountNo = transaction.getToAccountNo();
-        Account fromAccount = accountRepository.findById(fromAccountNo).orElseThrow(
-                () -> new AccountNotFoundException(fromAccountNo)
-        );
-        Account toAccount = accountRepository.findById(toAccountNo).orElseThrow(
-                () -> new AccountNotFoundException(toAccountNo)
-        );
 
         // Only HKD is supported for the current version
         if (!HKD.equals(transaction.getCurrency().toUpperCase())){
@@ -55,13 +49,20 @@ public class TransactionService {
         }
 
         // Transfer amount cannot be negative
-        if (transaction.getAmount() < 0){
-            throw new NegativeTransferAmountException(transaction.getAmount());
+        if (transaction.getAmount() <= 0){
+            throw new TransferAmountNotPositiveException(transaction.getAmount());
         }
 
-        if (!transaction.getToAccountName().equals(toAccount.getName())) {
-            throw new IncorrectAccountInfoException("Account holder name of the input is incorrect.");
+        if (fromAccountNo == toAccountNo){
+            throw new IncorrectAccountInfoException("The transaction from account and to account cannot be the same.");
         }
+
+        Account fromAccount = accountRepository.findById(fromAccountNo).orElseThrow(
+                () -> new AccountNotFoundException(fromAccountNo)
+        );
+        Account toAccount = accountRepository.findById(toAccountNo).orElseThrow(
+                () -> new AccountNotFoundException(toAccountNo)
+        );
 
         if (!transaction.getToAccountName().equals(toAccount.getName())) {
             throw new IncorrectAccountInfoException("Account holder name of the input is incorrect.");
