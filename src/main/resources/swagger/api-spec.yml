@@ -57,11 +57,15 @@ paths:
           schema:
             $ref: '#/definitions/AccountBalance'
         400:
-          description: Account balance not enough for the money transfer / Account holder name not matched
+          description: remaining balance not enough for the money transfer / Account holder name not matched / amount not positive number / currency not supported / etc.
           schema:
             $ref: '#/definitions/Error'
         404:
           description: Account Number not found
+          schema:
+            $ref: '#/definitions/Error'
+        406:
+          description: Wrong request format
           schema:
             $ref: '#/definitions/Error'
         default:
