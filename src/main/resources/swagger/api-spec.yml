@@ -10,7 +10,7 @@ basePath: /v1/money
 produces:
 - application/json
 paths:
-  /balance/{accountNo}:
+  /account/{accountNo}:
     get:
       summary: Display the account balance of specific customer account
       description: |
@@ -116,5 +116,11 @@ definitions:
       code:
         type: integer
         format: int32
+        description: HTTP status code of the error
       message:
         type: string
+        description: the error description
+      dateTime:
+        type: string
+        format: date-time
+        description: the current timestamp of server response, in ISO-8601 date format
