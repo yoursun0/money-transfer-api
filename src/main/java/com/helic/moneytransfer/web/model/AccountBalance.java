@@ -10,7 +10,7 @@ public class AccountBalance {
 
     private double balance;
 
-    private Currency currency;
+    private String currency;
 
     private LocalDateTime dateTime;
 
@@ -38,11 +38,11 @@ public class AccountBalance {
         this.balance = balance;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

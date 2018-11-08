@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.helic.moneytransfer.db.entity.Account;
-import com.helic.moneytransfer.web.model.Currency;
 
 public class AccountBuilder implements Serializable {
 
@@ -14,7 +13,7 @@ public class AccountBuilder implements Serializable {
 
     private Double balance;
 
-    private String currency = Currency.HKD.toString();
+    private String currency;
 
     private LocalDateTime createdTs = LocalDateTime.now();
 
@@ -22,37 +21,37 @@ public class AccountBuilder implements Serializable {
 
     public static AccountBuilder aBuilder = new AccountBuilder();
 
-    public AccountBuilder setId(Long id){
+    public AccountBuilder setId(Long id) {
         this.id = id;
         return this;
     }
 
-    public AccountBuilder setName(String name){
+    public AccountBuilder setName(String name) {
         this.name = name;
         return this;
     }
 
-    public AccountBuilder setBalance(Double balance){
+    public AccountBuilder setBalance(Double balance) {
         this.balance = balance;
         return this;
     }
 
-    public AccountBuilder setCurrency(Currency currency){
-        this.currency = currency.toString();
+    public AccountBuilder setCurrency(String currency) {
+        this.currency = currency;
         return this;
     }
 
-    public AccountBuilder setCreatedTs(LocalDateTime createdTs){
+    public AccountBuilder setCreatedTs(LocalDateTime createdTs) {
         this.createdTs = createdTs;
         return this;
     }
 
-    public AccountBuilder setUpdatedTs(LocalDateTime updatedTs){
+    public AccountBuilder setUpdatedTs(LocalDateTime updatedTs) {
         this.updatedTs = updatedTs;
         return this;
     }
 
-    public Account build(){
+    public Account build() {
         Account account = new Account();
         account.setId(id);
         account.setName(name);

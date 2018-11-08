@@ -2,6 +2,8 @@ package com.helic.moneytransfer.web.model;
 
 import javax.validation.constraints.NotNull;
 
+import net.bytebuddy.implementation.bind.annotation.Default;
+
 public class Transaction {
 
     @NotNull
@@ -16,7 +18,7 @@ public class Transaction {
     @NotNull
     private double amount;
 
-    private Currency currency = Currency.HKD;
+    private String currency = "HKD";
 
     private String date;
 
@@ -52,11 +54,11 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

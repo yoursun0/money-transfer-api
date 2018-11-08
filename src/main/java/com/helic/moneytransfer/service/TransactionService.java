@@ -12,11 +12,12 @@ import com.helic.moneytransfer.exception.AccountNotFoundException;
 import com.helic.moneytransfer.exception.IncorrectAccountInfoException;
 import com.helic.moneytransfer.exception.NotEnoughMoneyException;
 import com.helic.moneytransfer.exception.NotSupportedCurrencyException;
-import com.helic.moneytransfer.web.model.Currency;
 import com.helic.moneytransfer.web.model.Transaction;
 
 @Service
 public class TransactionService {
+
+    private static final String HKD = "HKD";
 
     @Autowired
     private AccountRepository accountRepository;
@@ -48,8 +49,8 @@ public class TransactionService {
         );
 
         // Only HKD is supported for the current version
-        if (!Currency.HKD.equals(transaction.getCurrency())){
-            throw new NotSupportedCurrencyException(transaction.getCurrency().toString());
+        if (!HKD.equals(transaction.getCurrency())){
+            throw new NotSupportedCurrencyException(transaction.getCurrency());
         }
 
         if (!transaction.getToAccountName().equals(toAccount.getName())) {
