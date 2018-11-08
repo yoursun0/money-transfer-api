@@ -1,7 +1,5 @@
 package com.helic.moneytransfer.web.model;
 
-import com.helic.moneytransfer.db.entity.Currency;
-
 import java.time.LocalDateTime;
 
 public class AccountBalance {
@@ -12,7 +10,7 @@ public class AccountBalance {
 
     private double balance;
 
-    private Currency currency;
+    private String currency;
 
     private LocalDateTime dateTime;
 
@@ -40,11 +38,11 @@ public class AccountBalance {
         this.balance = balance;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

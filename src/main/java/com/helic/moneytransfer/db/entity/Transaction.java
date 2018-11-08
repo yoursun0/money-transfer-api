@@ -1,33 +1,42 @@
 package com.helic.moneytransfer.db.entity;
 
+import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "account")
+@Table(name = "transaction")
 @EntityListeners(AuditingEntityListener.class)
-public class Account {
+public class Transaction {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", updatable = false, nullable = false)
-    @Size(min = 1, max = 255)
+    @Column(name= "fromAccountNo")
     @NotNull
-    private String name;
+    private Long fromAccountNo;
 
-    @Column(name= "balance")
-    private Double balance;
+    @Column(name= "toAccountNo")
+    @NotNull
+    private Long toAccountNo;
+
+    @Column(name= "amount")
+    @NotNull
+    private double amount;
 
     @Column(name= "currency")
-    private String currency;
+    private String currency = "HKD";
 
     @Column(name= "createdTs")
     @CreatedDate
@@ -45,20 +54,28 @@ public class Account {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Long getFromAccountNo() {
+        return fromAccountNo;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFromAccountNo(Long fromAccountNo) {
+        this.fromAccountNo = fromAccountNo;
     }
 
-    public Double getBalance() {
-        return balance;
+    public Long getToAccountNo() {
+        return toAccountNo;
     }
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
+    public void setToAccountNo(Long toAccountNo) {
+        this.toAccountNo = toAccountNo;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public String getCurrency() {

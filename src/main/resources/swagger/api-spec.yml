@@ -10,7 +10,7 @@ basePath: /v1/money
 produces:
 - application/json
 paths:
-  /balance/{accountNo}:
+  /account/{accountNo}:
     get:
       summary: Display the account balance of specific customer account
       description: |
@@ -57,11 +57,15 @@ paths:
           schema:
             $ref: '#/definitions/AccountBalance'
         400:
-          description: Account balance not enough for the money transfer / Account holder name not matched
+          description: remaining balance not enough for the money transfer / Account holder name not matched / amount not positive number / currency not supported / etc.
           schema:
             $ref: '#/definitions/Error'
         404:
           description: Account Number not found
+          schema:
+            $ref: '#/definitions/Error'
+        406:
+          description: Wrong request format
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -92,10 +96,10 @@ definitions:
     type: object
     properties:
       fromAccountNo:
-        type: string
+        type: number
         description: from account number
       toAccountNo:
-        type: string
+        type: number
         description: to account number
       toAccountName:
         type: string
@@ -106,15 +110,17 @@ definitions:
       currency:
         type: string
         description: currency of the money transaction, support only HKD for API version 1
-      date:
-        type: string
-        format: date
-        description: Optional field, scheduled date for the transaction to be executed. Execute immediately if leave blank.
   Error:
     type: object
     properties:
       code:
         type: integer
         format: int32
+        description: HTTP status code of the error
       message:
         type: string
+        description: the error description
+      dateTime:
+        type: string
+        format: date-time
+        description: the current timestamp of server response, in ISO-8601 date format
